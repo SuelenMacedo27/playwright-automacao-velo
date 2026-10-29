@@ -1,13 +1,20 @@
 import { test, expect } from '@playwright/test';
 
+/// Padrão AAA - Arrange, Act, Assert (PAV - Preparar, Agir, Verificar)
+
 test('consulta pedido aprovado', async ({ page }) => {
+  // Arrange
   await page.goto('http://localhost:5173/');
   await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint');
   await page.getByRole('link', { name: 'Consultar Pedido' }).click();
   await expect(page.getByRole('heading')).toContainText('Consultar Pedido');
   await page.getByTestId('search-order-id').click();
+
+  // Act
   await page.getByTestId('search-order-id').fill('VLO-F4S7OY');
   await page.getByTestId('search-order-button').click();
+
+  // Assert
   await expect(page.getByTestId('order-result-id')).toBeVisible();
   await expect(page.getByTestId('order-result-id')).toContainText('VLO-F4S7OY');
   await expect(page.getByTestId('order-result-status')).toBeVisible();
